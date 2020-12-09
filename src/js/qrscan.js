@@ -1,9 +1,14 @@
 import jsQR from "jsqr";
 
-const QRCODE_SCAN_MSG = 'valet_qrcodescan_response';
-
 function sendOutput(output) {
-  window.postMessage({type: QRCODE_SCAN_MSG, message: output});
+  const searchdata = window.location.search.slice(1);
+  const params = {};
+  searchdata.split('&').map(v => {
+    const pair = v.split('=');
+    params[pair[0]] = pair[1];
+  });
+
+  window.postMessage({type: params.type, id: params.id, message: output});
   setTimeout(() => window.close(), 2000);
 }
 
